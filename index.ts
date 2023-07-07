@@ -22,7 +22,9 @@ const server = http.createServer(app);
 
 
 
-
+app.get("/",(req,res)=>{
+  res.send("this is home page")
+})
 app.use("/auth",authRouter)
 app.use("/books",bookRouter)
 
