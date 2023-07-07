@@ -33,14 +33,14 @@ export const create= async (req: express.Request, res: express.Response) => {
             if(old){
              
               const tenMinutesAgo = new Date(Date.now() - 10 * 60 * 1000);
-            const oldbook=await  bookModel.find({
+              const oldbook=await  bookModel.find({
                 createdAt: { $lte: tenMinutesAgo }
               }).populate("creatorId");
               if(oldbook.length==0){
                 res.status(404).json({mes:"NO books Found"}) 
               }
              else{
-              res.status(200).json({older:oldbook})
+             res.status(200).json({older:oldbook})
              }            
             }else if(isNew){
               const tenMinutesAgo = new Date(Date.now() - 10 * 60 * 1000);
@@ -53,7 +53,7 @@ export const create= async (req: express.Request, res: express.Response) => {
               }else{
                 res.status(200).json({latest:newBooks})
               }
-              res.status(200).json({latest:newBooks})
+              
             }else{
               const allBook=await bookModel.find().populate("creatorId");
 
