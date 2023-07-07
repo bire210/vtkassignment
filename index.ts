@@ -20,10 +20,14 @@ app.use(bodyParser.json());
 
 const server = http.createServer(app);
 
+
+
+
 app.use("/auth",authRouter)
 app.use("/books",bookRouter)
 
 server.listen(8080, async() => {
+
 
   try {
     await connection
