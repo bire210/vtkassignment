@@ -5,13 +5,14 @@ import bodyParser from 'body-parser';
 import cookieParser from 'cookie-parser';
 import compression from 'compression';
 import cors from 'cors';
-const {connection}=require("./config/dbConnect")
-const authRouter=require("./routes/authRoute")
-const bookRouter=require("./routes/bookRoute")
+const {connection}=require("./src/config/dbConnect")
+const authRouter=require("./src/routes/authRoute")
+const bookRouter=require("./src/routes/bookRoute")
 const app = express();
 app.use(cors({
   credentials: true,
 }));
+
 
 app.use(compression());
 app.use(cookieParser());
