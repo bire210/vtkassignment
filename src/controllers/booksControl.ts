@@ -35,17 +35,34 @@ export const create= async (req: express.Request, res: express.Response) => {
               const tenMinutesAgo = new Date(Date.now() - 10 * 60 * 1000);
             const oldbook=await  bookModel.find({
                 createdAt: { $lte: tenMinutesAgo }
-              });
-              res.status(200).json({older:oldbook})            
+              }).populate("creatorId");
+              if(oldbook.length==0){
+                res.status(404).json({mes:"NO books Found"}) 
+              }
+             else{
+              res.status(200).json({older:oldbook})
+             }            
             }else if(isNew){
               const tenMinutesAgo = new Date(Date.now() - 10 * 60 * 1000);
               const newBooks=await bookModel.find({
                 createdAt: { $gte: tenMinutesAgo, $lte: new Date() }
-              });
+              }).populate("creatorId");
+
+              if(newBooks.length==0){
+                res.status(404).json({mes:"NO books Found"})
+              }else{
+                res.status(200).json({latest:newBooks})
+              }
               res.status(200).json({latest:newBooks})
             }else{
               const allBook=await bookModel.find().populate("creatorId");
+
+              if(allBook.length==0){
+                res.status(404).json({mes:"NO books Found"})
+              }
+             else{
               res.status(200).json({mes:allBook})
+             }
             }
              
               } else if (role.includes('VIEWER')) {
@@ -58,9 +75,15 @@ export const create= async (req: express.Request, res: express.Response) => {
                     createdAt: { $lte: tenMinutesAgo },
                      creatorId : creatorId 
                   } 
-                     );
+                     ).populate("creatorId");
 
-                     res.status(200).json({older:olderbook})
+
+                     if(olderbook.length==0){
+                      res.status(404).json({mes:"NO books Found"})
+                     }else{
+                      res.status(200).json({older:olderbook})
+                     }
+                     
 
                 }else if(isNew){
                   // newr book
@@ -70,12 +93,22 @@ export const create= async (req: express.Request, res: express.Response) => {
                         createdAt: { $gte: tenMinutesAgo, $lte: new Date() },
                         creatorId : creatorId 
                      } 
-                        );
-
-                    res.status(200).json({latest:newBook})
+                        ).populate("creatorId");
+              if(newBook.length==0){
+                res.status(404).json({mes:"NO books Found"})
+              }else{
+                res.status(200).json({latest:newBook})
+              }
+                    
                 }else{
                   const bookCreated= await bookModel.find({creatorId}).populate("creatorId")
-                  res.status(200).json({mes:bookCreated})
+                  res.status(404).json({mes:"NO books Found"})
+                  if(bookCreated.length==0){
+
+                  }else{
+                    res.status(200).json({mes:bookCreated})
+                  }
+                 
                 }
               
                 
