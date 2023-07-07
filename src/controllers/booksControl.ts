@@ -37,7 +37,7 @@ export const create= async (req: express.Request, res: express.Response) => {
                 createdAt: { $lte: tenMinutesAgo }
               }).populate("creatorId");
               if(oldbook.length==0){
-                res.status(404).json({mes:"NO books Found"}) 
+                res.status(404).json({mes:"NO books CREATED"}) 
               }
              else{
              res.status(200).json({older:oldbook})
@@ -98,20 +98,15 @@ export const create= async (req: express.Request, res: express.Response) => {
                 res.status(404).json({mes:"NO books Found"})
               }else{
                 res.status(200).json({latest:newBook})
-              }
-                    
+              } 
                 }else{
                   const bookCreated= await bookModel.find({creatorId}).populate("creatorId")
-                  res.status(404).json({mes:"NO books Found"})
                   if(bookCreated.length==0){
-
+                    res.status(404).json({mes:"NO books Found"})
                   }else{
                     res.status(200).json({mes:bookCreated})
                   }
-                 
-                }
-              
-                
+                }  
               } else {
                 return res.status(403).json({ message: 'Forbidden' });
               }
